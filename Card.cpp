@@ -196,13 +196,38 @@ if(lhs.get_rank() == rhs.get_rank()) {
 }
 }
 
-Suit Suit_next(Suit suit){
-  switch (suit) {
-    case SPADES: 
-      return CLUBS;
-    case HEARTS: 
-      return DIAMONDS; 
-    case DIAMONDS:
-      return HEARTS;
+ Suit Suit_next(Suit suit){
+  const Suit nextSuits[]= {CLUBS, DIAMONDS, SPADES, HEARTS};
+  return nextSuits[suit];
+}
+
+bool Card_less(const Card &a, const Card &b, Suit trump){
+  if(a.is_trump(trump) && !b.is_trump(trump)){
+    return false;
   }
+    else if (!a.is_trump(trump) && b.is_trump(trump)) {
+      return true;
+    } 
+    return (a.get_rank() < b.get_rank()); //if both a and b are trump or not look at rank
+}
+
+bool Card_less(const Card &a, const Card &b, const Card &led_card, Suit trump){
+  // Check if one of the cards is a trump card and the other is not
+   if (a.is_trump(trump) && !b.is_trump(trump)) {
+      return true;  
+  } else if (!a.is_trump(trump) && b.is_trump(trump)) {
+      return false;  
+  }
+    // If both are trump or not
+    // compare based on rank and the suit led
+  if (a.get_suit(trump) == led_card.get_suit(trump) && b.get_suit(trump) == led_card.get_suit(trump)) {
+      return (a.get_rank() < b.get_rank());  // suits the same check rank
+  } else if (a.get_suit(trump) == led_card.get_suit(trump)) {
+      return true;  // Return true if a has the same suit as the one led
+  } else if (b.get_suit(trump) == led_card.get_suit(trump)) {
+      return false;  // Return false if b has the same suit as the one led
+  }
+// suits led different look at rank only
+  return (a.get_rank() < b.get_rank());
+
 }
