@@ -91,6 +91,7 @@ std::istream & operator>>(std::istream &is, Suit &suit) {
 }
 
 
+
 /////////////// Write your implementation for Card below ///////////////
 
 
@@ -105,3 +106,75 @@ std::istream & operator>>(std::istream &is, Suit &suit) {
 //   operator>=
 //   operator==
 //   operator!=
+
+Card::Card()
+: rank(TWO), suit(SPADES) {}
+
+Card::Card(Rank rank_in, Suit suit_in)
+: rank(rank_in), suit(suit_in) {}
+
+Rank Card::get_rank() const{
+  return rank;
+}
+
+Suit Card::get_suit() const{
+  return suit;
+}
+
+Suit Card::get_suit(Suit trump) const{
+ if (is_left_bower(trump)) {
+  return trump;
+ } 
+ else {
+  return suit;
+ }
+}
+
+
+bool operator<(const Card &lhs, const Card &rhs){
+  if(lhs.get_rank() == rhs.get_rank()) {
+    return lhs.get_suit() < rhs.get_suit();
+  }else{  
+    return lhs.get_rank() < rhs.get_rank();
+  }
+}
+
+bool operator<=(const Card &lhs, const Card &rhs){
+  if(lhs.get_rank() == rhs.get_rank()) {
+    return lhs.get_suit() <= rhs.get_suit();
+  }else{  
+    return lhs.get_rank() <= rhs.get_rank();
+  } 
+}
+
+bool operator>(const Card &lhs, const Card &rhs){ //Card a > Card b
+//compare rank
+if(lhs.get_rank() == rhs.get_rank()) {
+  return lhs.get_suit() > rhs.get_suit();
+}else{  
+  return lhs.get_rank() > rhs.get_rank();
+}
+}
+bool operator>=(const Card &lhs, const Card &rhs){
+if(lhs.get_rank() == rhs.get_rank()) {
+  return lhs.get_suit() >= rhs.get_suit();
+}else{  
+  return lhs.get_rank() >= rhs.get_rank();
+}
+}
+
+bool operator==(const Card &lhs, const Card &rhs){
+if(lhs.get_rank() == rhs.get_rank()) {
+  return lhs.get_suit() == rhs.get_suit();
+}else{  
+  return lhs.get_rank() == rhs.get_rank();
+}
+}
+
+bool operator!=(const Card &lhs, const Card &rhs){
+if(lhs.get_rank() == rhs.get_rank()) {
+  return lhs.get_suit() != rhs.get_suit();
+}else{  
+  return lhs.get_rank() != rhs.get_rank();
+}
+}
