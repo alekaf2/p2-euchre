@@ -130,6 +130,23 @@ Suit Card::get_suit(Suit trump) const{
  }
 }
 
+bool Card::is_face_or_ace() const {
+  return (rank == JACK || rank == QUEEN || rank == KING || rank == ACE);
+}
+
+bool Card::is_right_bower(Suit trump) const {
+  return (rank == JACK && suit == trump);
+}
+
+bool Card::is_left_bower(Suit trump) const {
+  Suit nextSuit = Suit_next(trump);
+  return (rank == JACK && suit == nextSuit);
+}
+
+bool Card::is_trump(Suit trump) const {
+  return (suit == trump || is_left_bower(trump));
+}
+
 
 bool operator<(const Card &lhs, const Card &rhs){
   if(lhs.get_rank() == rhs.get_rank()) {
@@ -177,4 +194,15 @@ if(lhs.get_rank() == rhs.get_rank()) {
 }else{  
   return lhs.get_rank() != rhs.get_rank();
 }
+}
+
+Suit Suit_next(Suit suit){
+  switch (suit) {
+    case SPADES: 
+      return CLUBS;
+    case HEARTS: 
+      return DIAMONDS; 
+    case DIAMONDS:
+      return HEARTS;
+  }
 }
