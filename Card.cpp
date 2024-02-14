@@ -21,8 +21,8 @@ constexpr const char *const RANK_NAMES[] = {
   "Queen", // QUEEN
   "King",  // KING
   "Ace"    // ACE
-};
 
+};
 //REQUIRES str represents a valid rank ("Two", "Three", ..., "Ace")
 //EFFECTS returns the Rank correspoinding to str, for example "Two" -> TWO
 Rank string_to_rank(const std::string &str) {
