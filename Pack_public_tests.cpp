@@ -14,6 +14,8 @@ static const int PACK_SIZE = 24;
 TEST(test_pack_default_ctor) {
   Pack pack;
   Card first_card = pack.deal_one();
+  cout << first_card.get_rank() << endl;
+  cout << first_card.get_suit() << endl;
   ASSERT_EQUAL(first_card, Card(NINE, SPADES));
 }
 

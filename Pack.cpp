@@ -1,10 +1,13 @@
 #include "Pack.hpp"
+#include <cassert>
+#include <iostream>
+#include <array>
 
 Pack::Pack(){
     int index = 0;
 
     for (int suit = SPADES; suit <= DIAMONDS; ++suit){
-        for (int rank = TWO; rank <= ACE; ++rank) {
+        for (int rank = NINE; rank <= ACE; ++rank) {
             cards[index] = Card(static_cast<Rank>(rank), static_cast<Suit>(suit));
             ++index;
         }
@@ -16,10 +19,9 @@ Pack::Pack(std::istream& pack_input){
     next = 0;
 
     for (int index = 0; index < PACK_SIZE; ++index){
-        int rank, suit; 
-        pack_input >> rank >> suit;
-        cards[index] = Card(static_cast<Rank>(rank), static_cast<Suit>(suit));
-
+        Card card; 
+        pack_input >> card;
+        cards[index] = card;
     }
 
 }
@@ -42,19 +44,15 @@ void Pack::shuffle(){
     const int shuffle_iterations = 7; 
     for (int iteration = 0; iteration< shuffle_iterations; ++iteration){
         //temp array 
-        std::array<Card, PACK_SIZE> shuffled_cards;
-        int mid = PACK_SIZE/2;
-        
-        for (int i = 0, j = 0; i < mid; ++i, j +=2){
-            shuffled_cards[j] = cards[i];
-            shuffled_cards[j + 1] = cards[i + mid];
+        std::array<Card, PACK_SIZE> temp_cards = cards;
+        for (int i = 0; i < PACK_SIZE; ++i){
+            if(i % 2 == 0){//in an even index
+                cards.at(i) = temp_cards.at(12 + (i/2));//12 + because we want cards from the bottom half
+            }else{ // in an odd index
+                cards.at(i) = temp_cards.at((i - 1)/2);
+            }
+        }     
     }
-
-    for (int i = 0; i <PACK_SIZE; ++i) {
-        cards[i] = shuffled_cards[i];
-    }
-    }
-    reset();
 }
 
 bool Pack::empty() const {

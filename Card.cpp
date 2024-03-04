@@ -147,6 +147,20 @@ bool Card::is_trump(Suit trump) const {
   return (suit == trump || is_left_bower(trump));
 }
 
+std::ostream &operator<<(std::ostream &os, const Card &card) {
+  os << RANK_NAMES[card.get_rank()] << " of " << SUIT_NAMES[card.get_suit()];
+  return os;
+}
+
+std::istream &operator>>(std::istream &is, Card &card) {
+  std::string rank_str, suit_str, of;
+  is >> rank_str >> of >> suit_str;
+
+  card.rank = string_to_rank(rank_str);
+  card.suit = string_to_suit(suit_str);
+
+  return is;
+}
 
 bool operator<(const Card &lhs, const Card &rhs){
   if(lhs.get_rank() == rhs.get_rank()) {
@@ -181,11 +195,7 @@ if(lhs.get_rank() == rhs.get_rank()) {
 }
 
 bool operator==(const Card &lhs, const Card &rhs){
-if(lhs.get_rank() == rhs.get_rank()) {
-  return lhs.get_suit() == rhs.get_suit();
-}else{  
-  return lhs.get_rank() == rhs.get_rank();
-}
+  return lhs.get_rank() == rhs.get_rank() && lhs.get_suit() == rhs.get_suit();
 }
 
 bool operator!=(const Card &lhs, const Card &rhs){
@@ -197,8 +207,15 @@ if(lhs.get_rank() == rhs.get_rank()) {
 }
 
  Suit Suit_next(Suit suit){
-  const Suit nextSuits[]= {CLUBS, DIAMONDS, SPADES, HEARTS};
-  return nextSuits[suit];
+  if(suit == DIAMONDS){
+    return HEARTS;
+  }else if(suit == HEARTS){
+    return DIAMONDS;
+  }else if(suit == CLUBS){
+    return SPADES;
+  }else{
+    return CLUBS;
+  }
 }
 
 bool Card_less(const Card &a, const Card &b, Suit trump){
